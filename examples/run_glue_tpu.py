@@ -112,7 +112,7 @@ def train(args, train_dataset, model, tokenizer, disable_logging=False):
 
     # Train!
     logger.info("***** Running training *****")
-    logger.info("  Num examples = %d", len(dataloader) * args.train_batch_size)
+    logger.info("  Num examples = %d", len(dataloader) * args.train_batch_size * xm.xrt_world_size())
     logger.info("  Num Epochs = %d", args.num_train_epochs)
     logger.info("  Instantaneous batch size per TPU core = %d", args.train_batch_size)
     logger.info("  Total train batch size (w. parallel, distributed & accumulation) = %d",
@@ -209,7 +209,7 @@ def evaluate(args, model, tokenizer, prefix="", disable_logging=False):
 
         # Eval!
         logger.info("***** Running evaluation {} *****".format(prefix))
-        logger.info("  Num examples = %d", len(dataloader) * args.eval_batch_size)
+        logger.info("  Num examples = %d", len(dataloader) * args.eval_batch_size * xm.xrt_world_size())
         logger.info("  Batch size = %d", args.eval_batch_size)
         eval_loss = 0.0
         nb_eval_steps = 0
